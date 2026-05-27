@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Desafío Maldito Subercaseaux</title>
+
+    <link rel="icon" type="image/png" href="logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at center, #1a0000 0%, #050505 70%);
+            font-family: 'Cinzel', serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: background 1s ease;
+        }
+
+        .noise {
+            position: fixed;
+            inset: 0;
+            opacity: 0.08;
+            pointer-events: none;
+            background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+        }
+
+        h1 {
+            font-size: 3rem;
+            letter-spacing: 6px;
+            color: #d4b08a;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .sub {
+            color: #8f8f8f;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .board {
+
+            width: 900px;
+            max-width: 95vw;
+            height: 520px;
+            margin: 0 auto;
+
+            background:
+                radial-gradient(circle at top, rgba(255, 216, 148, .12) 0%, rgba(91, 57, 38, .95) 35%, #321f14 100%);
+
+            border-radius: 44px;
+            border: 8px solid #2d170f;
+            position: relative;
+            overflow: visible;
+
+            box-shadow:
+                0 0 60px rgba(255, 30, 30, .14),
+                inset 0 0 90px rgba(0, 0, 0, .55),
+                inset 0 0 20px rgba(255, 255, 255, .05);
+        }
+
+        body.video-active {
+            background: linear-gradient(to bottom, #000 0%, #0f0000 55%, #4a0000 100%);
+        }
+
+        /* LETRAS */
+
+        .letter {
+            position: absolute;
+            transform: translate(-50%, -50%) scale(var(--scale, 1));
+            transform-origin: center;
+
+            font-size: 4rem;
+            color: #24180f;
+            letter-spacing: .08em;
+            text-shadow: 0 0 2px rgba(0, 0, 0, .25);
+
+            cursor: pointer;
+            transition: transform .25s ease, color .25s ease, text-shadow .25s ease;
+            user-select: none;
+        }
+
+        .letter:hover {
+            --scale: 1.12;
+            color: #7a0000;
+            text-shadow: 0 0 12px rgba(255, 0, 0, .35);
+        }
+
+        .active {
+            color: #ff2a2a !important;
+            text-shadow: 0 0 20px red;
+        }
+
+        /* FILA SUPERIOR */
+
+        #a {
+            top: 27.5%;
+            left: 14.0%;
+        }
+
+        #b {
+            top: 25.0%;
+            left: 22.0%;
+        }
+
+        #c {
+            top: 23.2%;
+            left: 30.0%;
+        }
+
+        #d {
+            top: 22.0%;
+            left: 38.0%;
+        }
+
+        #e {
+            top: 21.3%;
+            left: 46.0%;
+        }
+
+        #f {
+            top: 21.3%;
+            left: 54.0%;
+        }
+
+        #g {
+            top: 22.0%;
+            left: 62.0%;
+        }
+
+        #h {
+            top: 23.2%;
+            left: 70.0%;
+        }
+
+        #i {
+            top: 25.0%;
+            left: 78.0%;
+        }
+
+        #j {
+            top: 27.5%;
+            left: 86.0%;
+        }
+
+        /* FILA MEDIO */
+
+        #k {
+            top: 43.5%;
+            left: 18.0%;
+        }
+
+        #l {
+            top: 40.8%;
+            left: 26.0%;
+        }
+
+        #m {
+            top: 38.5%;
+            left: 34.0%;
+        }
+
+        #n {
+            top: 36.8%;
+            left: 42.0%;
+        }
+
+        #ñ {
+            top: 36.0%;
+            left: 50.0%;
+        }
+
+        #o {
+            top: 36.8%;
+            left: 58.0%;
+        }
+
+        #p {
+            top: 38.5%;
+            left: 66.0%;
+        }
+
+        #q {
+            top: 40.8%;
+            left: 74.0%;
+        }
+
+        #r {
+            top: 43.5%;
+            left: 82.0%;
+        }
+
+        /* FILA ABAJO */
+
+        #s {
+            top: 61.5%;
+            left: 22.0%;
+        }
+
+        #t {
+            top: 58.5%;
+            left: 30.0%;
+        }
+
+        #u {
+            top: 56.0%;
+            left: 38.0%;
+        }
+
+        #v {
+            top: 54.0%;
+            left: 46.0%;
+        }
+
+        #w {
+            top: 54.0%;
+            left: 54.0%;
+        }
+
+        #x {
+            top: 56.0%;
+            left: 62.0%;
+        }
+
+        #y {
+            top: 58.5%;
+            left: 70.0%;
+        }
+
+        #z {
+            top: 61.5%;
+            left: 78.0%;
+        }
+
+        /* SI NO */
+
+        .yes,
+        .no {
+            position: absolute;
+            bottom: 72px;
+            font-size: 3rem;
+            color: #f8f0dc;
+            letter-spacing: .18em;
+            text-shadow: 0 0 6px rgba(0, 0, 0, .3);
+        }
+
+        .yes {
+            left: 16%;
+        }
+
+        .no {
+            right: 16%;
+        }
+
+        /* OJO */
+
+        .eye {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 5rem;
+            color: #120905;
+        }
+
+        /* MENSAJES */
+
+        .message {
+            margin-top: 20px;
+            height: 30px;
+            color: #ff3434;
+            letter-spacing: 4px;
+        }
+
+        /* VIDEO */
+
+        .video-container {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom, #000 0%, #0f0000 55%, #4a0000 100%);
+
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            gap: 18px;
+            padding-top: 48px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity .7s ease, visibility .7s ease, transform .7s ease;
+            transform: translateY(20px);
+
+            z-index: 100;
+        }
+
+        .video-container.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        iframe {
+            width: 90vw;
+            max-width: 1000px;
+            height: 56vw;
+            max-height: 560px;
+
+            border: 2px solid red;
+
+            box-shadow: 0 0 40px rgba(255, 0, 0, .5);
+            opacity: 0;
+            transform: translateY(20px) scale(.97);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+
+        .video-container.visible iframe {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .complete {
+            color: red;
+            font-size: 2rem;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 18px;
+            letter-spacing: 8px;
+        }
+
+        /* TEMBLOR */
+
+        .shake {
+            animation: shake .15s infinite;
+        }
+
+        @keyframes shake {
+
+            0% {
+                transform: translate(0);
+            }
+
+            25% {
+                transform: translate(4px, -4px);
+            }
+
+            50% {
+                transform: translate(-4px, 4px);
+            }
+
+            75% {
+                transform: translate(4px, 4px);
+            }
+
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        .candle {
+
+            position: absolute;
+
+            width: 26px;
+            height: 85px;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(to bottom,
+                    #4a0000 0%,
+                    #690000 20%,
+                    #2a0000 100%);
+
+            border: 1px solid rgba(255, 255, 255, .08);
+
+            box-shadow:
+                inset 0 -10px 15px rgba(0, 0, 0, .45),
+                inset 0 10px 10px rgba(255, 255, 255, .05);
+
+            transition: .5s;
+        }
+
+        /* CERA DERRETIDA */
+
+        .candle::after {
+
+            content: '';
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 18px;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(to bottom,
+                    #8d0000,
+                    #530000);
+
+            clip-path: polygon(0 0,
+                    100% 0,
+                    100% 65%,
+                    80% 90%,
+                    65% 60%,
+                    50% 100%,
+                    35% 60%,
+                    20% 90%,
+                    0 65%);
+        }
+
+        /* LLAMA */
+
+        .candle .flame {
+
+            position: absolute;
+
+            top: -32px;
+            left: 50%;
+
+            transform:
+                translateX(-50%) scale(0);
+
+            width: 18px;
+            height: 30px;
+
+            background:
+                radial-gradient(circle,
+                    #fff2a6 0%,
+                    #ffb300 35%,
+                    #ff4d00 75%,
+                    transparent 100%);
+
+            border-radius:
+                50% 50% 50% 50% / 70% 70% 30% 30%;
+
+            filter: blur(.5px);
+
+            opacity: 0;
+
+            transition: .4s;
+
+            animation: flicker 1s infinite;
+        }
+
+        /* PRENDIDA */
+
+        .lit {
+
+            box-shadow:
+                0 0 20px rgba(255, 0, 0, .5),
+                0 0 40px rgba(255, 80, 0, .3),
+                inset 0 -10px 15px rgba(0, 0, 0, .45),
+                inset 0 10px 10px rgba(255, 255, 255, .05);
+        }
+
+        .lit .flame {
+
+            transform:
+                translateX(-50%) scale(1);
+
+            opacity: 1;
+        }
+
+        /* PARPADEO */
+
+        @keyframes flicker {
+
+            0% {
+                transform:
+                    translateX(-50%) scale(1) rotate(-2deg);
+            }
+
+            25% {
+                transform:
+                    translateX(-50%) scale(1.05) rotate(2deg);
+            }
+
+            50% {
+                transform:
+                    translateX(-50%) scale(.95) rotate(-1deg);
+            }
+
+            75% {
+                transform:
+                    translateX(-50%) scale(1.08) rotate(1deg);
+            }
+
+            100% {
+                transform:
+                    translateX(-50%) scale(1) rotate(-2deg);
+            }
+        }
+
+        /* POSICIONES */
+
+        .c1 {
+            top: -32px;
+            left: 80px;
+        }
+
+        .c2 {
+            top: -32px;
+            right: 80px;
+        }
+
+        .c3 {
+            top: 128px;
+            left: 4px;
+        }
+
+        .c4 {
+            top: 128px;
+            right: 4px;
+        }
+
+        .c5 {
+            bottom: 20px;
+            left: 32px;
+        }
+
+        .c6 {
+            bottom: 20px;
+            right: 32px;
+        }
+
+        .c7 {
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                padding: 0;
+            }
+
+            h1 {
+                font-size: 2.4rem;
+            }
+
+            .sub {
+                margin-bottom: 18px;
+                font-size: 0.95rem;
+            }
+
+            .board {
+                width: 96vw;
+                max-width: 96vw;
+                height: 420px;
+            }
+
+            .letter {
+                font-size: 3rem;
+            }
+
+            .yes,
+            .no {
+                font-size: 2.4rem;
+            }
+
+            .yes {
+                left: 18%;
+            }
+
+            .no {
+                right: 18%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .board {
+                width: 96vw;
+                height: 360px;
+                margin-top: 24px;
+            }
+
+            .letter {
+                font-size: 2.7rem;
+            }
+
+            .candle {
+                width: 20px;
+                height: 68px;
+            }
+
+            .c1,
+            .c2 {
+                top: -25px;
+            }
+
+            .c3 {
+                top: 30px;
+                left: 8px;
+            }
+
+            .c4 {
+                top: 30px;
+                right: 8px;
+            }
+            
+            .c5 {
+                bottom: 18px;
+                left: 8px;
+            }
+
+            .c6 {
+                bottom: 18px;
+                right: 8px;
+            }
+
+            .c7 {
+                bottom: 3px;
+            }
+
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .sub {
+                font-size: 0.9rem;
+            }
+
+            .yes,
+            .no {
+                font-size: 2rem;
+            }
+
+            .yes {
+                left: 14%;
+            }
+
+            .no {
+                right: 14%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="noise"></div>
+
+    <h1>DESAFÍO MALDITO SUBERCASEAUX</h1>
+
+    <div class="sub">
+        Descubre la palabra correcta para despertar la señal.
+    </div>
+
+    <div class="board">
+
+        <div class="letter" id="a">A</div>
+        <div class="letter" id="b">B</div>
+        <div class="letter" id="c">C</div>
+        <div class="letter" id="d">D</div>
+        <div class="letter" id="e">E</div>
+        <div class="letter" id="f">F</div>
+        <div class="letter" id="g">G</div>
+        <div class="letter" id="h">H</div>
+        <div class="letter" id="i">I</div>
+        <div class="letter" id="j">J</div>
+
+        <div class="letter" id="k">K</div>
+        <div class="letter" id="l">L</div>
+        <div class="letter" id="m">M</div>
+        <div class="letter" id="n">N</div>
+        <div class="letter" id="ñ">Ñ</div>
+        <div class="letter" id="o">O</div>
+        <div class="letter" id="p">P</div>
+        <div class="letter" id="q">Q</div>
+        <div class="letter" id="r">R</div>
+
+        <div class="letter" id="s">S</div>
+        <div class="letter" id="t">T</div>
+        <div class="letter" id="u">U</div>
+        <div class="letter" id="v">V</div>
+        <div class="letter" id="w">W</div>
+        <div class="letter" id="x">X</div>
+        <div class="letter" id="y">Y</div>
+        <div class="letter" id="z">Z</div>
+
+        <div class="yes">SI</div>
+        <div class="no">NO</div>
+
+        <div class="candle c1">
+            <div class="flame"></div>
+        </div>
+        <div class="candle c2">
+            <div class="flame"></div>
+        </div>
+        <div class="candle c3">
+            <div class="flame"></div>
+        </div>
+        <div class="candle c4">
+            <div class="flame"></div>
+        </div>
+        <div class="candle c5">
+            <div class="flame"></div>
+        </div>
+        <div class="candle c6">
+            <div class="flame"></div>
+        </div>
+        <div class="candle c7">
+            <div class="flame"></div>
+        </div>
+
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <div class="video-container" id="videoContainer">
+
+        <div class="complete">
+            RITUAL COMPLETADO
+        </div>
+
+        <iframe id="albumVideo" allowfullscreen allow="autoplay">
+        </iframe>
+
+    </div>
+
+    <script>
+
+        const correctWord = ['D', 'E', 'L', 'I', 'R', 'I', 'O'];
+
+        let current = [];
+
+        const message = document.getElementById('message');
+
+        const videoContainer =
+            document.getElementById('videoContainer');
+
+        const video =
+            document.getElementById('albumVideo');
+        const candles = document.querySelectorAll('.candle');
+
+        let candleIndex = 0;
+
+        function lightCandle() {
+
+            if (candleIndex < candles.length) {
+
+                candles[candleIndex].classList.add('lit');
+
+                candleIndex++;
+            }
+        }
+
+
+        document.querySelectorAll('.letter').forEach(letter => {
+
+            letter.addEventListener('click', () => {
+
+                const value = letter.innerText;
+
+                current.push(value);
+
+                lightCandle();
+
+                verify();
+            });
+
+        });
+
+        function verify() {
+
+            for (let i = 0; i < current.length; i++) {
+
+                if (current[i] != correctWord[i]) {
+
+                    message.innerHTML =
+                        'EL RITUAL FALLÓ';
+
+                    setTimeout(reset, 1000);
+
+                    return;
+                }
+            }
+
+            if (current.length == correctWord.length) {
+
+                message.innerHTML =
+                    'LA SEÑAL DESPERTÓ';
+
+                document.body.classList.add('shake');
+
+                setTimeout(() => {
+
+                    document.body.classList.remove('shake');
+                    document.body.classList.add('video-active');
+
+                    video.src =
+                        'https://www.youtube.com/embed/ntsHOYSJbw4?autoplay=1';
+
+                    videoContainer.classList.add('visible');
+
+                }, 2500);
+            }
+        }
+
+        function reset() {
+
+            current = [];
+
+            document.querySelectorAll('.letter')
+                .forEach(l => l.classList.remove('active'));
+
+            message.innerHTML = '';
+
+            candleIndex = 0;
+
+            candles.forEach(c => {
+                c.classList.remove('lit');
+            });
+        }
+
+        // Evitar inspección básica y copiado desde teclado / click derecho
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        document.addEventListener('keydown', event => {
+            if (
+                event.key === 'F12' ||
+                (event.ctrlKey && event.shiftKey && ['I', 'J', 'C', 'K'].includes(event.key.toUpperCase())) ||
+                (event.ctrlKey && event.key.toUpperCase() === 'U') ||
+                (event.ctrlKey && event.key.toUpperCase() === 'S') ||
+                (event.ctrlKey && event.key === 'F')
+            ) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        });
+
+        document.addEventListener('copy', event => {
+            event.preventDefault();
+        });
+    </script>
+
+</body>
+
+</html>
