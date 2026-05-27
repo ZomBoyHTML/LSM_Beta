@@ -9,6 +9,7 @@
 
     <link rel="icon" type="image/png" href="logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
         * {
@@ -74,6 +75,7 @@
             border-radius: 44px;
             border: 8px solid #2d170f;
             position: relative;
+            z-index: 2;
             overflow: visible;
 
             box-shadow:
@@ -307,7 +309,7 @@
             align-items: center;
             flex-direction: column;
             gap: 18px;
-            padding-top: 48px;
+            padding-top: 30px;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
@@ -350,6 +352,72 @@
             text-align: center;
             margin-bottom: 18px;
             letter-spacing: 8px;
+        }
+
+        .social-links {
+            margin-top: 4px;
+            display: flex;
+            gap: 22px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color: #f5e6d0;
+
+            background: rgba(0, 0, 0, 0.25);
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            text-decoration: none;
+
+            transition:
+                transform .25s ease,
+                border-color .25s ease,
+                background .25s ease;
+        }
+
+        .social-links a:hover {
+
+            transform: translateY(-4px) scale(1.05);
+
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .social-links i {
+            font-size: 1.5rem;
+            color: #f5e6d0;
+            text-shadow: 0 0 8px rgba(255, 214, 157, 0.45);
+            transition: color .25s ease, text-shadow .25s ease, filter .25s ease;
+        }
+
+        .social-links a:hover i {
+            color: #ffdc92;
+            text-shadow: 0 0 16px rgba(255, 214, 157, 0.8);
+            filter: drop-shadow(0 0 10px rgba(255, 214, 157, 0.45));
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+            white-space: nowrap;
         }
 
         /* TEMBLOR */
@@ -626,7 +694,7 @@
                 top: 30px;
                 right: 8px;
             }
-            
+
             .c5 {
                 bottom: 18px;
                 left: 8px;
@@ -675,7 +743,13 @@
             text-transform: uppercase;
             pointer-events: none;
             user-select: none;
-            z-index: 10;
+            z-index: 1;
+            transition: opacity .2s ease;
+        }
+
+        body.shake .copyright,
+        body.video-active .copyright {
+            opacity: 0;
         }
     </style>
 </head>
@@ -751,6 +825,9 @@
 
     <div class="message" id="message"></div>
 
+    <div class="copyright">
+        © 2026 Desafío Maldito Subercaseaux
+    </div>
 
     <div class="video-container" id="videoContainer">
 
@@ -760,6 +837,23 @@
 
         <iframe id="albumVideo" allowfullscreen allow="autoplay">
         </iframe>
+
+        <div class="social-links">
+
+            <a href="https://www.youtube.com/@LosMalditosSubercaseaux" target="_blank" aria-label="YouTube">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+
+            <a href="https://www.instagram.com/losmalditossubercaseaux/" target="_blank" aria-label="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="https://open.spotify.com/intl-es/artist/0LtsP0YtLtXx7pY5QhfRjA" target="_blank"
+                aria-label="Spotify">
+                <i class="fa-brands fa-spotify"></i>
+            </a>
+
+        </div>
 
     </div>
 
