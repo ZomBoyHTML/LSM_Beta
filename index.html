@@ -67,53 +67,151 @@
             width: 900px;
             max-width: 95vw;
             height: 520px;
-            margin: 0 auto;
 
-            background:
-                radial-gradient(circle at top, rgba(255, 216, 148, .12) 0%, rgba(91, 57, 38, .95) 35%, #321f14 100%);
-
-            border-radius: 44px;
-            border: 8px solid #2d170f;
             position: relative;
-            z-index: 2;
             overflow: visible;
 
+            border-radius: 42px;
+
+            background:
+                linear-gradient(rgba(0, 0, 0, .35), rgba(0, 0, 0, .45)),
+                url('board.avif');
+
+            background-size: cover;
+            background-position: center;
+
+            border: 8px solid #140909;
+
             box-shadow:
-                0 0 60px rgba(255, 30, 30, .14),
-                inset 0 0 90px rgba(0, 0, 0, .55),
-                inset 0 0 20px rgba(255, 255, 255, .05);
+                0 0 80px rgba(255, 0, 0, .15),
+                0 25px 60px rgba(0, 0, 0, .8),
+                inset 0 0 120px rgba(0, 0, 0, .75);
         }
 
-        body.video-active {
-            background: linear-gradient(to bottom, #000 0%, #0f0000 55%, #4a0000 100%);
+        .board::after {
+
+            content: '';
+
+            position: absolute;
+
+            inset: 0;
+
+            border-radius: 42px;
+
+            pointer-events: none;
+
+            opacity: 0;
+
+            transition:
+                opacity 1s ease,
+                filter 1s ease;
+
+            background:
+
+                radial-gradient(circle at center,
+                    rgba(255, 40, 0, .18) 0%,
+                    rgba(120, 0, 0, .12) 35%,
+                    rgba(0, 0, 0, 0) 70%);
+
+            mix-blend-mode: screen;
+        }
+
+        .board.awakened {
+
+            box-shadow:
+                0 0 40px rgba(255, 0, 0, .18),
+                0 0 80px rgba(255, 0, 0, .12),
+                0 25px 60px rgba(0, 0, 0, .8),
+                inset 0 0 140px rgba(255, 0, 0, .18),
+                inset 0 0 60px rgba(255, 120, 0, .08);
+        }
+
+        .board.awakened::after {
+
+            opacity: 1;
+
+            filter: blur(20px);
+        }
+
+        .board.awakened {
+
+            animation: cursedGlow 2.5s ease-in-out infinite;
+        }
+
+        @keyframes cursedGlow {
+
+            0% {
+
+                filter: brightness(1);
+            }
+
+            50% {
+
+                filter: brightness(1.08);
+            }
+
+            100% {
+
+                filter: brightness(1);
+            }
         }
 
         /* LETRAS */
 
         .letter {
-            position: absolute;
-            transform: translate(-50%, -50%) scale(var(--scale, 1));
-            transform-origin: center;
 
-            font-size: 4rem;
-            color: #24180f;
-            letter-spacing: .08em;
-            text-shadow: 0 0 2px rgba(0, 0, 0, .25);
+            position: absolute;
+
+            transform: translate(-50%, -50%);
+
+            font-family: 'Cinzel', serif;
+
+            font-size: 5rem;
+
+            font-weight: 600;
+
+            color: #120a07;
+
+            letter-spacing: .04em;
 
             cursor: pointer;
-            transition: transform .25s ease, color .25s ease, text-shadow .25s ease;
-            user-select: none;
-        }
 
-        .letter:hover {
-            --scale: 1.12;
-            color: #7a0000;
-            text-shadow: 0 0 12px rgba(255, 0, 0, .35);
+            user-select: none;
+
+            transition:
+                color .25s ease,
+                text-shadow .25s ease,
+                filter .25s ease;
+
+            /* EFECTO GRABADO */
+
+            text-shadow:
+                0 1px 0 rgba(255, 255, 255, .05),
+                0 -1px 0 rgba(0, 0, 0, .8),
+                0 0 3px rgba(0, 0, 0, .5);
+
+            /* SUAVIZADO */
+
+            -webkit-font-smoothing: antialiased;
         }
 
         .active {
-            color: #ff2a2a !important;
-            text-shadow: 0 0 20px red;
+
+            background:
+                linear-gradient(to bottom,
+                    #ff3d2f90 0%,
+                    #7a0000 45%,
+                    #120000 100%);
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            text-shadow:
+                0 0 10px rgba(255, 0, 0, .7),
+                0 0 25px rgba(120, 0, 0, .45);
+
+            filter:
+                drop-shadow(0 0 8px rgba(255, 0, 0, .4));
         }
 
         /* FILA SUPERIOR */
@@ -261,31 +359,161 @@
 
         .yes,
         .no {
+
             position: absolute;
+
             bottom: 72px;
+
             font-size: 3rem;
-            color: #f8f0dc;
+
+            font-family: 'Cinzel', serif;
+
             letter-spacing: .18em;
-            text-shadow: 0 0 6px rgba(0, 0, 0, .3);
+
+            color: rgba(214, 193, 160, .55);
+
+            text-shadow:
+                0 1px 0 rgba(255, 255, 255, .04),
+                0 -1px 2px rgba(0, 0, 0, .75),
+                0 0 2px rgba(0, 0, 0, .4);
+
+            opacity: .9;
+
+            filter:
+                blur(.15px);
+
+            user-select: none;
+        }
+
+        .yes::before,
+        .no::before {
+
+            content: '';
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                repeating-linear-gradient(90deg,
+                    transparent 0px,
+                    rgba(0, 0, 0, .08) 2px,
+                    transparent 4px);
+
+            opacity: .35;
+
+            pointer-events: none;
         }
 
         .yes {
-            left: 16%;
+            top: 72%;
+            left: 20%;
         }
 
         .no {
-            right: 16%;
+            top: 72%;
+            right: 20%;
         }
+
 
         /* OJO */
 
         .eye {
+
             position: absolute;
-            bottom: 40px;
+
+            bottom: 30px;
+
             left: 50%;
-            transform: translateX(-50%);
+
+            transform: translateX(-50%) scale(.6);
+
             font-size: 5rem;
-            color: #120905;
+
+            color: rgba(255, 60, 30, 0);
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition:
+                opacity 1.2s ease,
+                transform 1.2s ease,
+                color 1.2s ease,
+                text-shadow 1.2s ease,
+                filter 1.2s ease;
+
+            z-index: 4;
+        }
+
+        .eye::before {
+
+            content: '';
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                repeating-linear-gradient(90deg,
+                    transparent 0px,
+                    rgba(0, 0, 0, .08) 2px,
+                    transparent 4px);
+
+            opacity: .3;
+
+            pointer-events: none;
+        }
+
+        body.shake .eye {
+
+            opacity: 1;
+
+            transform:
+                translateX(-50%) scale(1);
+
+            color: rgba(255, 70, 40, .95);
+
+            text-shadow:
+                0 0 12px rgba(255, 0, 0, .9),
+                0 0 25px rgba(255, 30, 0, .7),
+                0 0 50px rgba(255, 0, 0, .35);
+
+            filter:
+                drop-shadow(0 0 12px rgba(255, 0, 0, .55));
+
+            animation:
+                eyePulse 1.4s ease-in-out infinite;
+        }
+
+        @keyframes eyePulse {
+
+            0% {
+
+                transform:
+                    translateX(-50%) scale(1);
+
+                filter:
+                    drop-shadow(0 0 10px rgba(255, 0, 0, .4));
+            }
+
+            50% {
+
+                transform:
+                    translateX(-50%) scale(1.08);
+
+                filter:
+                    drop-shadow(0 0 18px rgba(255, 0, 0, .7));
+            }
+
+            100% {
+
+                transform:
+                    translateX(-50%) scale(1);
+
+                filter:
+                    drop-shadow(0 0 10px rgba(255, 0, 0, .4));
+            }
         }
 
         /* MENSAJES */
@@ -300,29 +528,53 @@
         /* VIDEO */
 
         .video-container {
+
             position: fixed;
+
             inset: 0;
-            background: linear-gradient(to bottom, #000 0%, #0f0000 55%, #4a0000 100%);
+
+            background:
+                linear-gradient(to bottom,
+                    #000 0%,
+                    #0a0000 45%,
+                    #3b0000 100%);
 
             display: flex;
-            justify-content: flex-start;
+
+            justify-content: center;
+
             align-items: center;
+
             flex-direction: column;
-            gap: 18px;
-            padding-top: 30px;
+
+            gap: 10px;
+
+            padding-top: 0;
+
             opacity: 0;
+
             visibility: hidden;
+
             pointer-events: none;
-            transition: opacity .7s ease, visibility .7s ease, transform .7s ease;
+
+            transition:
+                opacity .7s ease,
+                visibility .7s ease,
+                transform .7s ease;
+
             transform: translateY(20px);
 
             z-index: 100;
         }
 
         .video-container.visible {
+
             opacity: 1;
+
             visibility: visible;
+
             pointer-events: auto;
+
             transform: translateY(0);
         }
 
@@ -350,12 +602,12 @@
             font-size: 2rem;
             width: 100%;
             text-align: center;
-            margin-bottom: 18px;
+            margin-bottom: 8px;
             letter-spacing: 8px;
         }
 
         .social-links {
-            margin-top: 4px;
+            margin-top: 0px;
             display: flex;
             gap: 22px;
             justify-content: center;
@@ -452,28 +704,32 @@
         .candle {
 
             position: absolute;
+            z-index: 5;
+            overflow: visible;
 
-            width: 26px;
-            height: 85px;
+            width: 22px;
+            height: 95px;
 
-            border-radius: 8px;
+            border-radius: 10px;
 
             background:
-                linear-gradient(to bottom,
-                    #4a0000 0%,
-                    #690000 20%,
-                    #2a0000 100%);
+                linear-gradient(to right,
+                    #220000 0%,
+                    #5e0000 18%,
+                    #8d1111 45%,
+                    #5c0000 72%,
+                    #1b0000 100%);
 
-            border: 1px solid rgba(255, 255, 255, .08);
+            border:
+                1px solid rgba(255, 255, 255, .06);
 
             box-shadow:
-                inset 0 -10px 15px rgba(0, 0, 0, .45),
-                inset 0 10px 10px rgba(255, 255, 255, .05);
+                inset -4px 0 8px rgba(0, 0, 0, .45),
+                inset 3px 0 5px rgba(255, 255, 255, .04),
+                inset 0 -10px 10px rgba(0, 0, 0, .35);
 
-            transition: .5s;
+            z-index: 5;
         }
-
-        /* CERA DERRETIDA */
 
         .candle::after {
 
@@ -481,28 +737,21 @@
 
             position: absolute;
 
-            top: 0;
+            top: -3px;
             left: 0;
 
             width: 100%;
-            height: 18px;
+            height: 22px;
 
-            border-radius: 8px;
+            border-radius: 50%;
 
             background:
-                linear-gradient(to bottom,
-                    #8d0000,
-                    #530000);
+                radial-gradient(circle at center,
+                    #a30000 0%,
+                    #650000 70%,
+                    #2a0000 100%);
 
-            clip-path: polygon(0 0,
-                    100% 0,
-                    100% 65%,
-                    80% 90%,
-                    65% 60%,
-                    50% 100%,
-                    35% 60%,
-                    20% 90%,
-                    0 65%);
+            opacity: .95;
         }
 
         /* LLAMA */
@@ -511,7 +760,9 @@
 
             position: absolute;
 
-            top: -32px;
+            z-index: 20;
+
+            top: -28px;
             left: 50%;
 
             transform:
@@ -620,11 +871,6 @@
             right: 32px;
         }
 
-        .c7 {
-            bottom: 3px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
 
         @media (max-width: 900px) {
             body {
@@ -705,10 +951,6 @@
                 right: 8px;
             }
 
-            .c7 {
-                bottom: 3px;
-            }
-
 
             h1 {
                 font-size: 2rem;
@@ -750,6 +992,27 @@
         body.shake .copyright,
         body.video-active .copyright {
             opacity: 0;
+        }
+
+        .available {
+
+            color: rgba(255, 255, 255, .72);
+
+            font-size: 1.1rem;
+
+            letter-spacing: .25em;
+
+            text-transform: uppercase;
+
+            margin-top: 15px;
+
+            margin-bottom: 10px;
+
+            text-align: center;
+
+            text-shadow:
+                0 0 8px rgba(255, 255, 255, .08),
+                0 0 20px rgba(255, 0, 0, .12);
         }
     </style>
 </head>
@@ -796,8 +1059,11 @@
         <div class="letter" id="y">Y</div>
         <div class="letter" id="z">Z</div>
 
-        <div class="yes">SI</div>
+        <div class="yes">YES</div>
         <div class="no">NO</div>
+        <div class="eye">
+            𓁹
+        </div>
 
         <div class="candle c1">
             <div class="flame"></div>
@@ -817,10 +1083,6 @@
         <div class="candle c6">
             <div class="flame"></div>
         </div>
-        <div class="candle c7">
-            <div class="flame"></div>
-        </div>
-
     </div>
 
     <div class="message" id="message"></div>
@@ -837,6 +1099,10 @@
 
         <iframe id="albumVideo" allowfullscreen allow="autoplay">
         </iframe>
+
+        <div class="available">
+            Ya disponible en:
+        </div>
 
         <div class="social-links">
 
@@ -893,6 +1159,14 @@
 
                 current.push(value);
 
+                /* EFECTO TEMPORAL */
+
+                letter.classList.add('active');
+
+                setTimeout(() => {
+                    letter.classList.remove('active');
+                }, 350);
+
                 lightCandle();
 
                 verify();
@@ -919,6 +1193,9 @@
 
                 message.innerHTML =
                     'LA SEÑAL DESPERTÓ';
+
+                document.querySelector('.board')
+                    .classList.add('awakened');
 
                 document.body.classList.add('shake');
 
